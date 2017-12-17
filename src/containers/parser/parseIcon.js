@@ -8,8 +8,8 @@ const ParseIcon = ({ success }) => (
   <div className={`parse-icon`}>
     {
       success ?
-      <FontAwesome name='check' size='2x' /> :
-      <FontAwesome className='error' name='times' size='2x' />
+      <FontAwesome name='check' /> :
+      <FontAwesome className='error' name='times' />
     }
   </div>
 
