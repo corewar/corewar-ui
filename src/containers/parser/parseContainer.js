@@ -8,6 +8,7 @@ import ParserOutput from './parserOutput'
 import InputSectionHeader from './inputSectionHeader'
 import OutputSectionHeader from './outputSectionHeader'
 import ParseControls from './parseControls'
+import DeliciousToast from '../app/deliciousToast'
 
 import './parseContainer.css'
 
@@ -18,6 +19,7 @@ import {
 
 const ParseContainer = ({ redcode, currentParseResult, parseResults, isParsing, parse, removeWarrior }) => (
   <div id="parseContainer">
+    <DeliciousToast messages={currentParseResult.messages} show={currentParseResult.messages && currentParseResult.messages.length > 0} />
     <ParseControls />
     <InputSectionHeader headerText={`instructions`} />
     <ParserInput redcode={redcode} handleChange={parse} />
