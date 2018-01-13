@@ -1,3 +1,5 @@
+import { fromJS } from 'immutable'
+
 import {
   INIT,
   STEP,
@@ -12,7 +14,7 @@ import {
 } from './../actions/simulatorActions'
 
 // state
-const initialState = {
+const initialState = fromJS({
   isInitialised: false,
   isRunning: false,
   runProgress: 0,
@@ -38,7 +40,7 @@ const initialState = {
     { id: 6, name: '94t' },
     { id: 7, name: 'Tiny Limited Process' }
   ]
-}
+})
 
 // selectors
 export const getSimulatorState = state => state.simulator
