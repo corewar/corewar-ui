@@ -1,3 +1,5 @@
+import { fromJS } from 'immutable'
+
 import {
   PARSE,
   ADD_WARRIOR,
@@ -5,14 +7,14 @@ import {
 } from './../actions/parserActions'
 
 // state
-const initialState = {
+const initialState = fromJS({
   isParsing: false,
   currentParseResult: {},
   parseResults: [],
   standardId: 2, // TODO: what's the best standard to use as a default?
   redcode: '',
   warrior: ''
-}
+})
 
 // selectors
 export const getParserState = state => state.parser
