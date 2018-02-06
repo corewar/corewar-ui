@@ -168,6 +168,8 @@ class CanvasCore extends Component {
 
   renderWrites(warriorMessages) {
 
+    this.coreContext.beginPath()
+
     const writes = warriorMessages.filter(m => m.accessType === accessType.write)
     writes.forEach(write => {
       
@@ -175,6 +177,8 @@ class CanvasCore extends Component {
       
       this.renderWrite(coordinate)
     })
+
+    this.coreContext.stroke()
   }
 
   renderExecutes(warriorMessages) {
@@ -188,32 +192,33 @@ class CanvasCore extends Component {
     })
   }
 
-  renderCurrentTask(coordinate) {
+  //TODO render current task logic is wrong
+  // renderCurrentTask(coordinate) {
 
-    if (this.lastCoordinates) {
+  //   if (this.lastCoordinates) {
 
-      this.interactiveContext.clearRect(
-        this.lastCoordinates.x,
-        this.lastCoordinates.y,
-        this.lastCoordinates.wh,
-        this.lastCoordinates.wh)
-    }
+  //     this.interactiveContext.clearRect(
+  //       this.lastCoordinates.x,
+  //       this.lastCoordinates.y,
+  //       this.lastCoordinates.wh,
+  //       this.lastCoordinates.wh)
+  //   }
 
-    this.interactiveContext.fillStyle = colour.white
+  //   this.interactiveContext.fillStyle = colour.white
 
-    this.interactiveContext.fillRect(
-      coordinate.x,
-      coordinate.y,
-      this.cellSize,
-      this.cellSize)
+  //   this.interactiveContext.fillRect(
+  //     coordinate.x,
+  //     coordinate.y,
+  //     this.cellSize,
+  //     this.cellSize)
 
-    this.lastCoordinates = {
-      x: coordinate.x,
-      y: coordinate.y - 1,
-      wh: this.cellSize + 2
-    }
+  //   this.lastCoordinates = {
+  //     x: coordinate.x,
+  //     y: coordinate.y - 1,
+  //     wh: this.cellSize + 2
+  //   }
 
-  }
+  // }
 
   screenCoordinateToAddress(point) {
 
@@ -234,8 +239,6 @@ class CanvasCore extends Component {
       coordinate.y,
       this.cellSize,
       this.cellSize)
-
-    this.renderCurrentTask(coordinate)
   }
 
   renderRead(coordinate) {
@@ -261,13 +264,11 @@ class CanvasCore extends Component {
     const x1 = x0 + this.cellSize
     const y1 = y0 + this.cellSize
 
-    this.coreContext.beginPath()
     this.coreContext.moveTo(x0, y0)
     this.coreContext.lineTo(x1, y1)
     this.coreContext.moveTo(x0, y1)
     this.coreContext.lineTo(x1, y0)
     this.coreContext.moveTo(x0, y0)
-    this.coreContext.stroke()
   }
 
   clearCanvas() {
