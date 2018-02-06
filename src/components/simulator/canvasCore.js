@@ -4,6 +4,12 @@ import * as PubSub from 'pubsub-js'
 
 import { colour } from '../../styles/theme'
 
+const accessType = {
+  read: 0,
+  write: 1,
+  execute: 2
+}
+
 class CanvasCore extends Component {
 
   constructor(props) {
@@ -53,7 +59,7 @@ class CanvasCore extends Component {
     const height = this.canvasContainer.clientHeight
 
     // we get a brief period of zero values when switching display mode, during unmount/mount
-    if(width === 0 && height === 0) {
+    if (width === 0 && height === 0) {
       return
     }
 
@@ -85,7 +91,7 @@ class CanvasCore extends Component {
   componentDidUpdate(prevProps) {
     // if we got a new set of core options and the coreSize changed we need to redraw
     // the grid with new cell sizes
-    if(this.props.coreSize !== prevProps.coreSize || !this.hasLoaded) {
+    if (this.props.coreSize !== prevProps.coreSize || !this.hasLoaded) {
       this.hasLoaded = true
       this.init()
     }
@@ -113,25 +119,78 @@ class CanvasCore extends Component {
     const iy = Math.floor(address / this.cellsWide)
 
     return {
-        x: ix * this.cellSize,
-        y: iy * this.cellSize
+      x: ix * this.cellSize,
+      y: iy * this.cellSize
     }
   }
 
   renderMessages() {
 
-    this.messages.forEach((data) => {
-      this.renderCell(data)
-    })
+    // this.messages.forEach((data) => {
+    //   this.renderCell(data)
+    // })
+
+    const warriorIds = [...new Set(this.messages.map(m => m.warriorId))]
+
+    for(let i = 0; i < warriorIds.length; i++) {
+
+      this.renderWarriorMessages(warriorIds[i])
+    }
 
     this.messages = []
 
     window.requestAnimationFrame(() => this.renderMessages())
   }
 
+  renderWarriorMessages(warriorId) {
+
+    const warriorMessages = this.messages.filter(m => m.warriorId == warriorId)
+    const colour = this.getColour(warriorId)
+    
+    this.coreContext.fillStyle = colour
+    this.coreContext.strokeStyle = colour
+
+    this.renderReads(warriorMessages)
+    this.renderWrites(warriorMessages)
+    this.renderExecutes(warriorMessages)
+  }
+
+  renderReads(warriorMessages) {
+
+    const reads = warriorMessages.filter(m => m.accessType === accessType.read)
+    reads.forEach(read => {
+      
+      const coordinate = this.addressToScreenCoordinate(read.address)
+      
+      this.renderRead(coordinate)
+    })
+  }
+
+  renderWrites(warriorMessages) {
+
+    const writes = warriorMessages.filter(m => m.accessType === accessType.write)
+    writes.forEach(write => {
+      
+      const coordinate = this.addressToScreenCoordinate(write.address)
+      
+      this.renderWrite(coordinate)
+    })
+  }
+
+  renderExecutes(warriorMessages) {
+    
+    const executes = warriorMessages.filter(m => m.accessType === accessType.execute)
+    executes.forEach(execute => {
+      
+      const coordinate = this.addressToScreenCoordinate(execute.address)
+      
+      this.renderExecute(coordinate)
+    })
+  }
+
   renderCurrentTask(coordinate) {
 
-    if(this.lastCoordinates) {
+    if (this.lastCoordinates) {
 
       this.interactiveContext.clearRect(
         this.lastCoordinates.x,
@@ -165,44 +224,18 @@ class CanvasCore extends Component {
   }
 
   getColour(warriorId) {
-    return colour.warrior[warriorId]
-  }
-
-  renderCell(event) {
-
-    const coordinate = this.addressToScreenCoordinate(event.address)
-
-    const warriorId = event.warriorId
-
-    const colour = this.getColour(warriorId)
-    this.coreContext.fillStyle = colour
-    this.coreContext.strokeStyle = colour
-
-    switch (event.accessType) {
-        case 0:
-            this.renderRead(coordinate)
-            break
-        case 1:
-            this.renderWrite(coordinate)
-            break
-        case 2:
-            this.renderExecute(coordinate)
-            break
-        default:
-            throw Error("Cannot render unknown CoreAccessType: " + event.accessType)
-    }
+    return colour.warrior[warriorId % colour.warrior.length]
   }
 
   renderExecute(coordinate) {
 
     this.coreContext.fillRect(
-        coordinate.x,
-        coordinate.y,
-        this.cellSize,
-        this.cellSize)
+      coordinate.x,
+      coordinate.y,
+      this.cellSize,
+      this.cellSize)
 
     this.renderCurrentTask(coordinate)
-
   }
 
   renderRead(coordinate) {
@@ -211,8 +244,8 @@ class CanvasCore extends Component {
     const radius = this.cellSize / 8
 
     const centre = {
-        x: coordinate.x + hSize,
-        y: coordinate.y + hSize
+      x: coordinate.x + hSize,
+      y: coordinate.y + hSize
     }
 
     this.coreContext.beginPath()
@@ -271,7 +304,7 @@ class CanvasCore extends Component {
 
     while (!this.isValidCellSize(possibleCellSize)) {
 
-        possibleCellSize--
+      possibleCellSize--
     }
 
     return possibleCellSize
@@ -301,8 +334,8 @@ class CanvasCore extends Component {
 
     for (let y = 0; y <= gridHeight; y += this.cellSize) {
 
-        this.coreContext.moveTo(0, y)
-        this.coreContext.lineTo(gridWidth, y)
+      this.coreContext.moveTo(0, y)
+      this.coreContext.lineTo(gridWidth, y)
     }
   }
 
@@ -313,8 +346,8 @@ class CanvasCore extends Component {
 
     for (let x = 0; x <= gridWidth; x += this.cellSize) {
 
-        this.coreContext.moveTo(x, 0)
-        this.coreContext.lineTo(x, gridHeight)
+      this.coreContext.moveTo(x, 0)
+      this.coreContext.lineTo(x, gridHeight)
     }
   }
 
@@ -324,7 +357,7 @@ class CanvasCore extends Component {
     let extraCellsDrawn = cellsDrawn - this.props.coreSize
 
     if (extraCellsDrawn === 0) {
-        return
+      return
     }
 
     const gridWidth = this.cellsWide * this.cellSize
@@ -345,33 +378,33 @@ class CanvasCore extends Component {
       x -= this.cellSize
 
       if (x < 0) {
-          x = maxX
-          y -= this.cellSize
+        x = maxX
+        y -= this.cellSize
       }
     }
   }
 
   getRelativeCoordinates(event) {
 
-      let totalOffsetX = 0
-      let totalOffsetY = 0
-      let currentElement = event.target
+    let totalOffsetX = 0
+    let totalOffsetY = 0
+    let currentElement = event.target
 
-      do {
-          totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft
-          totalOffsetY += currentElement.offsetTop - currentElement.scrollTop
-      }
-      while (currentElement = currentElement.offsetParent)
+    do {
+      totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft
+      totalOffsetY += currentElement.offsetTop - currentElement.scrollTop
+    }
+    while (currentElement = currentElement.offsetParent)
 
-      const canvasX = (event.pageX - totalOffsetX) - 2
-      const canvasY = (event.pageY - totalOffsetY) - 2
+    const canvasX = (event.pageX - totalOffsetX) - 2
+    const canvasY = (event.pageY - totalOffsetY) - 2
 
-      return { x: canvasX, y: canvasY }
+    return { x: canvasX, y: canvasY }
   }
 
   canvasClick(e) {
 
-    if(!this.props.isInitialised) {
+    if (!this.props.isInitialised) {
       return
     }
 
@@ -413,26 +446,28 @@ class CanvasCore extends Component {
 
     return <div id="canvasContainer"
       ref={(canvasContainer) => {
-        if(canvasContainer == null) { return }
+        if (canvasContainer == null) { return }
         this.canvasContainer = canvasContainer
-    }}>
+      }}>
       <canvas
         ref={(coreCanvasEl) => {
-          if(coreCanvasEl == null) { return }
+          if (coreCanvasEl == null) { return }
           this.coreContext = coreCanvasEl.getContext("2d")
-          this.coreCanvas = coreCanvasEl }}
+          this.coreCanvas = coreCanvasEl
+        }}
         height={this.state.height}
         width={this.state.width}
-        ></canvas>
+      ></canvas>
       <canvas
         ref={(interactiveCanvasEl) => {
-          if(interactiveCanvasEl == null) { return }
+          if (interactiveCanvasEl == null) { return }
           this.interactiveContext = interactiveCanvasEl.getContext("2d")
-          this.interactiveCanvas = interactiveCanvasEl }}
+          this.interactiveCanvas = interactiveCanvasEl
+        }}
         height={this.state.height}
         width={this.state.width}
-        ></canvas>
-      </div>
+      ></canvas>
+    </div>
   }
 
 }
