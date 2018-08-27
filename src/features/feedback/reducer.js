@@ -3,9 +3,7 @@ import {
 } from './actions'
 
 // state
-const initialState = {
-  feedbackMessage: ''
-}
+import initialState from './initialState'
 
 // selectors
 export const getFeedbackState = state => state.feedback
@@ -13,13 +11,8 @@ export const getFeedbackState = state => state.feedback
 // reducer
 export default (state = initialState, action) => {
   switch (action.type) {
-
     case FEEDBACK_RESPONSE:
-      return {
-        ...state,
-        feedbackMessage: action.message.message
-      }
-
+      return state.set('feedbackMessage', action.message.message)
     default:
       return state
   }

@@ -1,6 +1,9 @@
 import { expect } from 'chai'
+import { fromJS } from 'immutable'
+import * as matchers from 'jest-immutable-matchers';
 
 import simulatorReducer from './../../features/simulator/reducer'
+import initialState from './../../features/simulator/initialState'
 
 import {
   INIT,
@@ -17,40 +20,17 @@ import {
 
 describe('when testing the simulator reducers', () => {
 
+  beforeEach(() => {
+    jest.addMatchers(matchers)
+  })
+
   it('should return the initial state', () => {
 
     const action = {}
 
     const result = simulatorReducer(undefined, action)
 
-    expect(result).to.deep.equal({
-      isInitialised: false,
-      isRunning: false,
-      runProgress: 0,
-      focus: null,
-      roundResult: {},
-
-      coreSize: 8000,
-      cyclesBeforeTie: 80000,
-      minSeparation: 100,
-      instructionLimit: 100,
-      maxTasks: 8000,
-
-      instructions: [],
-      displaySettings: false,
-      processRate: 1,
-      processRates: [1, 2, 5, 12, 30, 75, 200, 500, 2000],
-      currentCoreOption: 1,
-      coreOptions: [
-        { id: 1, name: 'Beginner'},
-        { id: 2, name: 'Nano' },
-        { id: 3, name: 'Tiny' },
-        { id: 4, name: 'Limited Process' },
-        { id: 5, name: 'Fortress' },
-        { id: 6, name: '94t' },
-        { id: 7, name: 'Tiny Limited Process' }
-      ]
-    })
+    expect(result).to.deep.equal(initialState)
 
   })
 
@@ -60,13 +40,17 @@ describe('when testing the simulator reducers', () => {
       type: INIT
     }
 
-    const result = simulatorReducer([], action)
+    const result = simulatorReducer(undefined, action)
 
-    expect(result).to.deep.equal({
+    expect(result).toEqualImmutable({
       isInitialised: true,
       roundResult: {},
       runProgress: 0
     })
+
+    // expect(result.get('isInitialised')).to.equal(true)
+    // expect(result.get('roundResult').equals(fromJS({}))).to.be.true
+    // expect(result.get('runProgress')).to.equal(0)
 
   })
 
@@ -76,9 +60,9 @@ describe('when testing the simulator reducers', () => {
       type: STEP
     }
 
-    const result = simulatorReducer([], action)
+    const result = simulatorReducer(undefined, action)
 
-    expect(result).to.deep.equal({})
+    expect(result).to.deep.equal(initialState)
 
   })
 
@@ -91,11 +75,9 @@ describe('when testing the simulator reducers', () => {
       }
     }
 
-    const result = simulatorReducer([], action)
+    const result = simulatorReducer(undefined, action)
 
-    expect(result).to.deep.equal({
-      runProgress: 50
-    })
+    expect(result.get('runProgress')).to.equal(50)
 
   })
 
@@ -105,11 +87,9 @@ describe('when testing the simulator reducers', () => {
       type: RUN
     }
 
-    const result = simulatorReducer([], action)
+    const result = simulatorReducer(undefined, action)
 
-    expect(result).to.deep.equal({
-      isRunning: true
-    })
+    expect(result.get('isRunning')).to.equal(true)
 
   })
 
@@ -119,11 +99,9 @@ describe('when testing the simulator reducers', () => {
       type: PAUSE
     }
 
-    const result = simulatorReducer([], action)
+    const result = simulatorReducer(undefined, action)
 
-    expect(result).to.deep.equal({
-      isRunning: false
-    })
+    expect(result.get('isRunning')).to.equal(false)
 
   })
 
@@ -136,12 +114,10 @@ describe('when testing the simulator reducers', () => {
       }
     }
 
-    const result = simulatorReducer([], action)
+    const result = simulatorReducer(undefined, action)
 
-    expect(result).to.deep.equal({
-      isRunning: false,
-      roundResult: action.data
-    })
+    expect(result.get('isRunning')).to.equal(false)
+    expect(result.get('roundResult')).to.equal(action.data)
 
   })
 
@@ -152,11 +128,9 @@ describe('when testing the simulator reducers', () => {
       coreInfo: [1 ,2 ,3]
     }
 
-    const result = simulatorReducer([], action)
+    const result = simulatorReducer(undefined, action)
 
-    expect(result).to.deep.equal({
-      coreInfo: action.coreInfo
-    })
+    expect(result.get('coreInfo')).to.equal(action.coreInfo)
 
   })
 
@@ -167,11 +141,9 @@ describe('when testing the simulator reducers', () => {
       focus: 24
     }
 
-    const result = simulatorReducer([], action)
+    const result = simulatorReducer(undefined, action)
 
-    expect(result).to.deep.equal({
-      focus: action.focus
-    })
+    expect(result.get('focus')).to.equal(action.focus)
 
   })
 
@@ -182,11 +154,9 @@ describe('when testing the simulator reducers', () => {
       rate: 12
     }
 
-    const result = simulatorReducer([], action)
+    const result = simulatorReducer(undefined, action)
 
-    expect(result).to.deep.equal({
-      processRate: action.rate
-    })
+    expect(result.get('processRate')).to.equal(action.rate)
 
   })
 
@@ -202,16 +172,16 @@ describe('when testing the simulator reducers', () => {
       maxTasks: 6
     }
 
-    const result = simulatorReducer([], action)
+    const result = simulatorReducer(undefined, action)
 
-    expect(result).to.deep.equal({
+    expect(result.includes({
       currentCoreOption: action.id,
       coreSize: action.coreSize,
       cyclesBeforeTie: action.cyclesBeforeTie,
       minSeparation: action.minSeparation,
       instructionLimit: action.instructionLimit,
       maxTasks: action.maxTasks
-    })
+    })).to.be.true
 
   })
 
