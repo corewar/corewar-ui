@@ -21,12 +21,14 @@ const DefaultText = styled.span`
   font-size: ${font.small};
 `
 
-const Instructions = ({ instructions, runProgress, warriors, maxTasks, focus }) =>
+const Instructions = ({ instructions, runProgress, cycle, maximumCycles, warriors, maxTasks, focus }) =>
 <InstructionWrapper>
   <RoundProgress
     warriors={warriors}
     maxTasks={maxTasks}
-    runProgress={runProgress} />
+    runProgress={runProgress}
+    cycle={cycle}
+    maximumCycles={maximumCycles} />
     {instructions ? instructions.map(info =>
       <Instruction
         key={info.instruction.address}
@@ -40,6 +42,8 @@ const Instructions = ({ instructions, runProgress, warriors, maxTasks, focus }) 
 const mapStateToProps = state => ({
   instructions: state.simulator.coreInfo,
   runProgress: state.simulator.runProgress,
+  cycle: state.simulator.cycle,
+  maximumCycles: state.simulator.maximumCycles,
   maxTasks: state.simulator.maxTasks,
   focus: state.simulator.focus,
   warriors: state.parser.warriors

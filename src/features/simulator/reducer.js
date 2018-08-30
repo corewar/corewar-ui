@@ -17,6 +17,8 @@ const initialState = {
   isInitialised: false,
   isRunning: false,
   runProgress: 0,
+  cycle: 1,
+  maximumCycles: 80000,
   focus: null,
   roundResult: {},
 
@@ -54,7 +56,9 @@ export default (state = initialState, action) => {
         ...state,
         isInitialised: true,
         roundResult: {},
-        runProgress: 0
+        runProgress: 0,
+        cycle: 1,
+        maximumCycles: 80000
       }
 
     case STEP:
@@ -77,7 +81,9 @@ export default (state = initialState, action) => {
     case RUN_PROGRESS:
       return {
         ...state,
-        runProgress: action.data.runProgress
+        runProgress: action.data.runProgress,
+        cycle: action.data.cycle + 1,
+        maximumCycles: action.data.maximumCycles
       }
 
     case RUN_ENDED:

@@ -72,11 +72,13 @@ class RoundProgress extends Component{
   }
 
   render() {
-    const { warriors, runProgress, maxTasks } = this.props
+    const { warriors, runProgress, cycle, maximumCycles, maxTasks } = this.props
     return (
       <RoundStatusWrapper>
         <span>Round status</span>
-        <ProgressBar runProgress={runProgress} />
+        <ProgressBar runProgress={runProgress}>
+          <span>{cycle}/{maximumCycles}</span>
+        </ProgressBar>
         <span>Tasks</span>
         {warriors && warriors.map((warrior, i) => {
           const taskCount = this.state.tasks[i]

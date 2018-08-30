@@ -139,7 +139,7 @@ export function* getCoreOptionsFromState() {
 export function* initialiseCore(options, warriors) {
 
   yield call(PubSub.publishSync, 'RESET_CORE')
-
+console.log(options)
   yield call([corewar, corewar.initialiseSimulator], options, warriors, PubSub)
 
   yield put({ type: INIT })
