@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import { fromJS } from 'immutable'
-import * as matchers from 'jest-immutable-matchers';
 
 import simulatorReducer from './../../features/simulator/reducer'
 import initialState from './../../features/simulator/initialState'
@@ -20,10 +19,6 @@ import {
 
 describe('when testing the simulator reducers', () => {
 
-  beforeEach(() => {
-    jest.addMatchers(matchers)
-  })
-
   it('should return the initial state', () => {
 
     const action = {}
@@ -42,15 +37,15 @@ describe('when testing the simulator reducers', () => {
 
     const result = simulatorReducer(undefined, action)
 
-    expect(result).toEqualImmutable({
-      isInitialised: true,
-      roundResult: {},
-      runProgress: 0
-    })
+    // expect(result).toEqualImmutable({
+    //   isInitialised: true,
+    //   roundResult: {},
+    //   runProgress: 0
+    // })
 
-    // expect(result.get('isInitialised')).to.equal(true)
-    // expect(result.get('roundResult').equals(fromJS({}))).to.be.true
-    // expect(result.get('runProgress')).to.equal(0)
+    expect(result.get('isInitialised')).to.equal(true)
+    expect(result.get('roundResult').equals(fromJS({}))).to.be.true
+    expect(result.get('runProgress')).to.equal(0)
 
   })
 
@@ -174,14 +169,21 @@ describe('when testing the simulator reducers', () => {
 
     const result = simulatorReducer(undefined, action)
 
-    expect(result.includes({
-      currentCoreOption: action.id,
-      coreSize: action.coreSize,
-      cyclesBeforeTie: action.cyclesBeforeTie,
-      minSeparation: action.minSeparation,
-      instructionLimit: action.instructionLimit,
-      maxTasks: action.maxTasks
-    })).to.be.true
+    expect(result.get('currentCoreOption')).to.equal(action.id)
+    expect(result.get('coreSize')).to.equal(action.coreSize)
+    expect(result.get('cyclesBeforeTie')).to.equal(action.cyclesBeforeTie)
+    expect(result.get('minSeparation')).to.equal(action.minSeparation)
+    expect(result.get('instructionLimit')).to.equal(action.instructionLimit)
+    expect(result.get('maxTasks')).to.equal(action.maxTasks)
+
+    // expect(result.includes({
+    //   currentCoreOption: action.id,
+    //   coreSize: action.coreSize,
+    //   cyclesBeforeTie: action.cyclesBeforeTie,
+    //   minSeparation: action.minSeparation,
+    //   instructionLimit: action.instructionLimit,
+    //   maxTasks: action.maxTasks
+    // })).to.be.true
 
   })
 

@@ -15,7 +15,7 @@ describe('when testing the parser reducer', () => {
 
     const result = parserReducer(undefined, action)
 
-    expect(result).to.deep.equal(initialState.toJS())
+    expect(result).to.deep.equal(initialState)
 
   })
 
@@ -30,12 +30,16 @@ describe('when testing the parser reducer', () => {
 
     }
 
-    const result = parserReducer([], action)
+    const result = parserReducer(undefined, action)
 
-    expect(result).to.deep.equal({
-      currentWarrior: action.currentWarrior,
-      displayFileManager: false
-    })
+
+    expect(result.get('currentWarrior')).to.equal(action.currentWarrior)
+    expect(result.get('displayFileManager')).to.equal(false)
+
+    // expect(result).to.deep.equal({
+    //   currentWarrior: action.currentWarrior,
+    //   displayFileManager: false
+    // })
 
   })
 

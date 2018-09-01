@@ -26,7 +26,7 @@
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "next",
-    "react-scripts": "^1.1.4",
+    "react-scripts": "^1.1.5",
     "react-scroll-to-component": "^1.0.2",
     "react-test-renderer": "^16.2.0",
     "react-transition-group": "^2.2.1",

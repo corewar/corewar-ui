@@ -96,9 +96,9 @@ export function* removeWarriorSaga({ id }) {
 
   const { warriors } = yield select(getParserState)
 
-  if(id === warriors[warriors.length - 1].data.id) {
-    yield put({ type: SET_CURRENT_WARRIOR, currentWarrior: warriors[warriors.length - 2] })
-  }
+  // if(id === warriors[warriors.length - 1].data.id) {
+  //   yield put({ type: SET_CURRENT_WARRIOR, currentWarrior: warriors[warriors.length - 2] })
+  // }
 
   const warriorList = yield call(removeById, id, warriors)
 
