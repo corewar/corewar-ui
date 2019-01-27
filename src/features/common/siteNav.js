@@ -26,7 +26,7 @@ const Header = styled.header`
 
   a:hover {
     border-bottom: 2px solid ${colour.blue};
-    colour: ${colour.white};
+    color: ${colour.white};
     transition: 0.5s;
   }
 `

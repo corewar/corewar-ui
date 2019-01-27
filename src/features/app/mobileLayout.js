@@ -7,7 +7,7 @@ import NavBar from '../navbar/navbar'
 import InputContainer from '../parser/inputContainer'
 import OutputContainer from '../parser/outputContainer'
 import SimulatorContainer from '../simulator/simulatorContainer'
-import ConfigContainer from '../config/configContainer'
+import MatchConfigContainer from '../matchConfig/matchConfigContainer'
 import ResultsContainer from '../results/resultsContainer'
 
 import { space } from '../common/theme'
@@ -26,7 +26,7 @@ const MobileLayout = ({ interfaceMode }) => (
     <Route exact path="/app/editor/output" component={OutputContainer} />
     <Route exact path="/app/editor/core" render={() => <SimulatorContainer mobile />} />
 
-    <Route exact path="/app/player/config" component={ConfigContainer} />
+    <Route exact path="/app/player/config" component={MatchConfigContainer} />
     <Route exact path="/app/player/results" component={ResultsContainer} />
     <Route exact path="/app/player/core" render={() => <SimulatorContainer mobile />} />
   </MobileGrid>
