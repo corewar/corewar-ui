@@ -10,7 +10,7 @@ import WarriorSelector from './warriorSelector'
 import InterfaceModeContainer from '../interfaceModeSelector/interfaceModeContainer'
 import FileManagerContainer from '../fileManager/fileManagerContainer'
 
-import { addWarrior, removeWarrior } from './actions'
+import { addWarrior, removeWarrior, selectWarrior } from './actions'
 
 const StyledFormGroup = styled.section`
   width: 100%;
@@ -40,7 +40,13 @@ const StyledInput = styled.input`
 
 const StyledRow = styled.section``
 
-const MatchConfigContainer = ({ warriorList, selectedWarriors, addWarrior, removeWarrior }) => (
+const MatchConfigContainer = ({
+  warriorList,
+  selectedWarriors,
+  selectWarrior,
+  addWarrior,
+  removeWarrior
+}) => (
   <MobilePage mobile>
     <div>Sidebar</div>
     <div>
@@ -51,16 +57,20 @@ const MatchConfigContainer = ({ warriorList, selectedWarriors, addWarrior, remov
       <section>
         <StyledFormGroup>
           <StyledLabel>Warriors</StyledLabel>
-          {selectedWarriors.map((i, warrior) => (
-            <StyledRow>
-              <StyledLabel>{warrior.metaData.name}</StyledLabel>
-              <OcticonButton iconName={`minus`} handleClick={() => removeWarrior(i)} />
-            </StyledRow>
-          ))}
         </StyledFormGroup>
+        {selectedWarriors && selectedWarriors.length > 0 ? (
+          selectedWarriors.map((warrior, i) => (
+            <WarriorSelector
+              list={warriorList}
+              handleChange={() => selectWarrior(i)}
+              handleRemove={() => removeWarrior(i)}
+            />
+          ))
+        ) : (
+          <p>No warriors selected</p>
+        )}
         <StyledRow>
-          <WarriorSelector warriorList={warriorList} onSelect={addWarrior} />
-          <OcticonButton iconName={`plus`} handleClick={() => addWarrior} />
+          <OcticonButton iconName={`plus`} handleClick={() => addWarrior(warriorList[0])} />
         </StyledRow>
       </section>
     </div>
@@ -70,7 +80,7 @@ const MatchConfigContainer = ({ warriorList, selectedWarriors, addWarrior, remov
 )
 
 const mapStateToProps = state => ({
-  warriorList: state.parser.warriors,
+  warriorList: state.parser.warriors, //.concat(state.parser.warriorLibrary)
   selectedWarriors: state.config.selectedWarriors
 })
 
@@ -78,7 +88,8 @@ export default connect(
   mapStateToProps,
   {
     addWarrior,
-    removeWarrior
+    removeWarrior,
+    selectWarrior
   }
 )(MatchConfigContainer)
 
