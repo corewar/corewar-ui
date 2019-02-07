@@ -8,7 +8,7 @@ import { colour, space } from '../common/theme'
 
 const StyledRow = styled.section`
   display: flex;
-  padding: ${space.m};
+  padding-top: ${space.m};
 `
 
 const StyledSelect = styled.select`
@@ -19,25 +19,31 @@ const StyledSelect = styled.select`
   width: 75%;
 `
 
+const Box = styled.div`
+  border: 1px solid ${colour.white};
+  padding: ${space.s};
+  margin-left: ${space.m};
+`
+
 const WarriorSelector = ({ handleChange, list, handleRemove }) => (
   <StyledRow>
     <StyledSelect onChange={handleChange}>
-      {list.map(warrior => {
-        console.log(warrior)
-        return (
-          <option key={warrior.data.id} id={warrior.data.id}>
-            {warrior.metaData.name}
-          </option>
-        )
-      })}
+      {list.map(warrior => (
+        <option key={warrior.data.id} id={warrior.data.id}>
+          {warrior.metaData.name}
+        </option>
+      ))}
     </StyledSelect>
-    <OcticonButton iconName={`dash`} handleClick={handleRemove} />
+    <Box>
+      <OcticonButton iconName={`dash`} handleClick={handleRemove} />
+    </Box>
   </StyledRow>
 )
 
 WarriorSelector.propTypes = {
   list: PropTypes.array,
-  onSelect: PropTypes.func
+  handleChange: PropTypes.func,
+  handleRemove: PropTypes.func
 }
 
 WarriorSelector.defaultProps = {

@@ -12,11 +12,14 @@ const ButtonText = styled.span`
 
 const ButtonGrid = styled.div`
   display: grid;
-  grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr;
 
   .octicon-plus {
     padding-left: 0.3em;
+  }
+
+  .octicon-dash {
+    padding-left: 0.4em;
   }
 `
 
@@ -24,7 +27,7 @@ const OcticonButton = ({ enabled = true, active, handleClick, iconName, buttonTe
   <Button enabled={enabled} active={active} handleClick={handleClick}>
     <ButtonGrid>
       <Octicon name={iconName} />
-      <ButtonText>{buttonText}</ButtonText>
+      {buttonText && <ButtonText>{buttonText}</ButtonText>}
     </ButtonGrid>
   </Button>
 )

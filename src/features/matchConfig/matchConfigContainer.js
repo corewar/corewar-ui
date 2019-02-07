@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { space, colour, font } from '../common/theme'
 
 import MobilePage from '../common/mobilePage'
+import Button from '../common/button'
 import OcticonButton from '../common/octiconButton'
 import WarriorSelector from './warriorSelector'
 import InterfaceModeContainer from '../interfaceModeSelector/interfaceModeContainer'
@@ -13,11 +14,12 @@ import FileManagerContainer from '../fileManager/fileManagerContainer'
 import { addWarrior, removeWarrior, selectWarrior } from './actions'
 
 const StyledFormGroup = styled.section`
-  width: 100%;
+  width: calc(100% - ${space.m} - ${space.m});
   padding: ${space.m};
+  margin-bottom: ${space.l};
 
   display: grid;
-  grid-template-rows: ${space.l} ${space.l};
+  grid-row-gap: ${space.s};
 
   color: ${colour.white};
   font-size: ${space.m};
@@ -25,7 +27,6 @@ const StyledFormGroup = styled.section`
 
 const StyledLabel = styled.label`
   color: ${colour.white};
-  font-family: ${font.code};
 `
 
 const StyledInput = styled.input`
@@ -40,40 +41,62 @@ const StyledInput = styled.input`
 
 const StyledRow = styled.section``
 
+const Box = styled.div`
+  border: 1px solid ${colour.white};
+  padding: ${space.s};
+  width: ${space.l};
+`
+
+const StyledMatchConfig = styled.section`
+  padding: ${space.m};
+`
+
+const StyledSidebar = styled.section`
+  border-right: 1px solid ${colour.darkbg};
+`
+
 const MatchConfigContainer = ({
   warriorList,
   selectedWarriors,
   selectWarrior,
   addWarrior,
-  removeWarrior
+  removeWarrior,
+  start
 }) => (
   <MobilePage mobile>
-    <div>Sidebar</div>
-    <div>
+    <StyledSidebar>Sidebar</StyledSidebar>
+    <StyledMatchConfig>
       <StyledFormGroup>
         <StyledLabel htmlFor="round-count">Rounds</StyledLabel>
         <StyledInput id="round-count" defaultValue="10" />
       </StyledFormGroup>
-      <section>
-        <StyledFormGroup>
-          <StyledLabel>Warriors</StyledLabel>
-        </StyledFormGroup>
+
+      <StyledFormGroup>
+        <StyledLabel>Warriors</StyledLabel>
         {selectedWarriors && selectedWarriors.length > 0 ? (
           selectedWarriors.map((warrior, i) => (
             <WarriorSelector
               list={warriorList}
+              warrior={warrior}
               handleChange={() => selectWarrior(i)}
               handleRemove={() => removeWarrior(i)}
             />
           ))
         ) : (
-          <p>No warriors selected</p>
+          <StyledLabel>No warriors selected</StyledLabel>
         )}
+      </StyledFormGroup>
+      <StyledFormGroup>
         <StyledRow>
-          <OcticonButton iconName={`plus`} handleClick={() => addWarrior(warriorList[0])} />
+          <Box>
+            <OcticonButton iconName={`plus`} handleClick={() => addWarrior(warriorList[0])} />
+          </Box>
         </StyledRow>
-      </section>
-    </div>
+      </StyledFormGroup>
+      <Button enabled={true} active={true} handleClick={start}>
+        Start
+      </Button>
+    </StyledMatchConfig>
     <InterfaceModeContainer />
     <FileManagerContainer />
   </MobilePage>
