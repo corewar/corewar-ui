@@ -115,7 +115,7 @@ export function* getCoreOptionsFromState() {
     roundResult
   } = yield select(getSimulatorState)
 
-  var p = {
+  const options = {
     result: roundResult,
     warriors: warriors,
     options: {
@@ -128,7 +128,7 @@ export function* getCoreOptionsFromState() {
     }
   }
 
-  return p
+  return options
 }
 
 export function* initialiseCore(options, warriors) {

@@ -7,7 +7,7 @@ import signup from '../features/signup/reducer'
 import documentation from '../features/documentation/reducer'
 import feedback from '../features/feedback/reducer'
 import interfaceMode from '../features/interfaceModeSelector/reducer'
-import config from '../features/matchConfig/reducer'
+import match from '../features/matchConfig/reducer'
 
 export default combineReducers({
   routing: routerReducer,
@@ -17,5 +17,5 @@ export default combineReducers({
   documentation,
   feedback,
   interfaceMode,
-  config
+  match
 })

@@ -5,13 +5,12 @@ import { insertItem, removeItem, replaceItem } from '../../helpers/arrayHelpers'
 import initialState from './initialState'
 
 // selectors
-export const getConfigState = state => state.parser
+export const getMatchState = state => state.match
 
 // reducer
 export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_WARRIOR:
-      console.log('add', action.warrior)
       return {
         ...state,
         selectedWarriors: insertItem(
@@ -22,14 +21,12 @@ export default (state = initialState, action) => {
       }
 
     case REMOVE_WARRIOR:
-      console.log('remove at', action.index)
       return {
         ...state,
         selectedWarriors: removeItem(action.index, state.selectedWarriors)
       }
 
     case SELECT_WARRIOR:
-      console.log('replace at', action.index, action.warrior)
       return {
         ...state,
         selectedWarriors: replaceItem(action.index, state.selectedWarriors, action.warrior)

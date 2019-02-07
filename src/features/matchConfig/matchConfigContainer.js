@@ -11,7 +11,7 @@ import WarriorSelector from './warriorSelector'
 import InterfaceModeContainer from '../interfaceModeSelector/interfaceModeContainer'
 import FileManagerContainer from '../fileManager/fileManagerContainer'
 
-import { addWarrior, removeWarrior, selectWarrior } from './actions'
+import { addWarrior, removeWarrior, selectWarrior, start } from './actions'
 
 const StyledFormGroup = styled.section`
   width: calc(100% - ${space.m} - ${space.m});
@@ -104,16 +104,12 @@ const MatchConfigContainer = ({
 
 const mapStateToProps = state => ({
   warriorList: state.parser.warriors, //.concat(state.parser.warriorLibrary)
-  selectedWarriors: state.config.selectedWarriors
+  selectedWarriors: state.match.selectedWarriors
 })
 
 export default connect(
   mapStateToProps,
-  {
-    addWarrior,
-    removeWarrior,
-    selectWarrior
-  }
+  { start, addWarrior, removeWarrior, selectWarrior }
 )(MatchConfigContainer)
 
 export { MatchConfigContainer as PureMatchConfigContainer }
