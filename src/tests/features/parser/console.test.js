@@ -2,8 +2,8 @@ import React from 'react'
 import { shallow, mount } from 'enzyme'
 import { expect } from 'chai'
 
-import Console from '../../features/parser/console'
-import { MessageRow } from '../../features/parser/console'
+import Console from '../../../features/parser/console'
+import { MessageRow } from '../../../features/parser/console'
 
 it('renders without crashing', () => {
   shallow(<Console />)

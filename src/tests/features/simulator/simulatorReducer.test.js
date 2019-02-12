@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 
-import simulatorReducer from './../../features/simulator/reducer'
-import initialState from './../../features/simulator/initialState'
+import simulatorReducer from 'features/simulator/reducer'
+import initialState from 'features/simulator/initialState'
 
 import {
   INIT,
@@ -14,7 +14,7 @@ import {
   SET_CORE_FOCUS,
   SET_PROCESS_RATE,
   SET_CORE_OPTIONS
-} from './../../features/simulator/actions'
+} from 'features/simulator/actions'
 
 describe('when testing the simulator reducers', () => {
   it('should return the initial state', () => {

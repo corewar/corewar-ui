@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from 'enzyme'
 
-import CanvasCore from '../../features/simulator/core'
+import Core from '../../../features/simulator/core'
 
 it('renders without crashing', () => {
   const props = {
@@ -13,5 +13,5 @@ it('renders without crashing', () => {
     republish: () => {}
   }
 
-  render(<CanvasCore {...props} />)
+  render(<Core {...props} />)
 })
