@@ -64,7 +64,7 @@ const MatchConfigContainer = ({
   start
 }) => (
   <MobilePage mobile>
-    <StyledSidebar>Sidebar</StyledSidebar>
+    <StyledSidebar />
     <StyledMatchConfig>
       <StyledFormGroup>
         <StyledLabel htmlFor="round-count">Rounds</StyledLabel>
@@ -93,9 +93,15 @@ const MatchConfigContainer = ({
           </Box>
         </StyledRow>
       </StyledFormGroup>
-      <Button enabled={true} active={true} handleClick={start}>
-        Start
-      </Button>
+      <StyledFormGroup>
+        <Button
+          enabled={selectedWarriors && selectedWarriors.length > 0}
+          active={true}
+          handleClick={start}
+        >
+          Start
+        </Button>
+      </StyledFormGroup>
     </StyledMatchConfig>
     <InterfaceModeContainer />
     <FileManagerContainer />
