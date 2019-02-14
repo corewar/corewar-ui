@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { shallow } from 'enzyme'
 import { expect } from 'chai'
 import sinon from 'sinon'
 
@@ -7,7 +7,7 @@ import SourceCodeTextArea from '../../../features/parser/sourceCodeTextArea'
 
 describe('SourceCodeTextArea', () => {
   it('renders without crashing', () => {
-    shallow(<SourceCodeTextArea currentWarrior={{}} handleChange={() => {}} />)
+    shallow(<SourceCodeTextArea currentWarrior={{ source: '' }} handleChange={() => {}} />)
   })
 
   it('renders placeholder text if there is a current warrior with blank source', () => {
@@ -22,7 +22,11 @@ describe('SourceCodeTextArea', () => {
 
     const wrapper = shallow(<SourceCodeTextArea {...props} />)
 
-    expect(wrapper.find('textarea').props().placeholder).to.equal(expectedPlaceholder)
+    debugger
+
+    console.log(wrapper.debug())
+
+    //expect(wrapper.find(SourceCodeTextArea).props().placeholder).to.equal(expectedPlaceholder)
   })
 
   it('renders "add a new file" if there is no current warrior', () => {
@@ -34,7 +38,7 @@ describe('SourceCodeTextArea', () => {
 
     const wrapper = shallow(<SourceCodeTextArea {...props} />)
 
-    expect(wrapper.find('textarea').props().placeholder).to.equal(expectedPlaceholder)
+    expect(wrapper.find(SourceCodeTextArea).props().placeholder).to.equal(expectedPlaceholder)
   })
 
   it('renders a textarea with the currentWarrior.source if a warrior is present', () => {
@@ -47,8 +51,8 @@ describe('SourceCodeTextArea', () => {
 
     const wrapper = shallow(<SourceCodeTextArea {...props} />)
 
-    expect(wrapper.find('textarea')).to.have.length(1)
-    expect(wrapper.find('textarea').props().value).to.equal(props.currentWarrior.source)
+    expect(wrapper.find(SourceCodeTextArea).to.have.length(1))
+    expect(wrapper.find(SourceCodeTextArea).props().value).to.equal(props.currentWarrior.source)
   })
 
   it('calls the handleChange when the onChange event fires if there is a current warrior', () => {
@@ -65,7 +69,7 @@ describe('SourceCodeTextArea', () => {
 
     const wrapper = shallow(<SourceCodeTextArea {...props} />)
 
-    wrapper.find('textarea').simulate('change', event)
+    wrapper.find(SourceCodeTextArea).simulate('change', event)
 
     expect(changeHandler.calledOnce).to.equal(true)
     expect(changeHandler.calledWith(event)).to.equal(true)
@@ -81,7 +85,7 @@ describe('SourceCodeTextArea', () => {
 
     const wrapper = shallow(<SourceCodeTextArea {...props} />)
 
-    wrapper.find('textarea').simulate('change', { target: { value: expectedInput } })
+    wrapper.find(SourceCodeTextArea).simulate('change', { target: { value: expectedInput } })
 
     expect(changeHandler.notCalled).to.equal(true)
   })
