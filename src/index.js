@@ -17,7 +17,8 @@ import 'typeface-lato'
 import 'typeface-inter'
 import 'typeface-anonymous-pro'
 
-import './cssreset.css'
+//import './cssreset.css'
+import './styles/styles.css'
 
 import { font, colour } from './features/common/theme'
 
