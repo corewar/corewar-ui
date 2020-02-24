@@ -1,5 +1,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/9b7a33cc-31cd-4578-854c-142a40d98be5/deploy-status)](https://app.netlify.com/sites/fervent-colden-f3a70c/deploys)
 
+# NOTE: This repository has been deprecated and moved to our new home in the monorepo at: https://github.com/corewar/corewar.io
+
 # Corewar UI
 
 This project is a web user interface for the Corewar.
